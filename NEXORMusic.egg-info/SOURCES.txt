@@ -1,0 +1,15 @@
+LICENSE
+README.md
+pyproject.toml
+NEXORMusic/__init__.py
+NEXORMusic/__main__.py
+NEXORMusic/log.py
+NEXORMusic/misc.py
+NEXORMusic.egg-info/PKG-INFO
+NEXORMusic.egg-info/SOURCES.txt
+NEXORMusic.egg-info/dependency_links.txt
+NEXORMusic.egg-info/entry_points.txt
+NEXORMusic.egg-info/requires.txt
+NEXORMusic.egg-info/top_level.txt
+strings/__init__.py
+strings/helpers.py

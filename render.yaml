@@ -1,0 +1,24 @@
+services:
+  - type: web
+    name: nexor-music-bot
+    env: python
+    plan: free
+    region: oregon
+    buildCommand: pip install --upgrade pip && pip install .
+    startCommand: python3 -m NEXORMusic
+    autoDeploy: true
+    envVars:
+      - key: API_ID
+        sync: false
+      - key: API_HASH
+        sync: false
+      - key: BOT_TOKEN
+        sync: false
+      - key: LOGGER_ID
+        sync: false
+      - key: MONGO_DB_URI
+        sync: false
+      - key: OWNER_ID
+        sync: false
+      - key: STRING_SESSION
+        sync: false

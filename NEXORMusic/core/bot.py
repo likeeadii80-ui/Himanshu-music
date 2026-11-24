@@ -1,0 +1,72 @@
+# ─────────────────────────────────────────────────────────────
+# NEXOR MUSIC  —  Developed & maintained by ADITYA
+# Developer : https://t.me/NEXOR_BLAZE
+# Channel   : https://t.me/MUSIXX_HUB
+# Copyright (C) 2026 by Aditya (NEXOR_BLAZE), < https://t.me/NEXOR_BLAZE >.
+# Modified by Aditya (NEXOR_BLAZE) from the original AloneMusic.
+# ─────────────────────────────────────────────────────────────
+# Original work (kept as required by GNU GPL v3):
+#
+# Copyright (C) 2021-2022 by TheAloneteam@Github, < https://github.com/TheAloneTeam >.
+# This file is part of < https://github.com/TheAloneTeam/AloneMusic > project,
+# and is released under the "GNU v3.0 License Agreement".
+# Please see < https://github.com/TheAloneTeam/AloneMusic/blob/master/LICENSE >
+#
+# All rights reserved.
+
+import sys
+
+from pyrogram import Client, errors
+from pyrogram.enums import ChatMemberStatus, ParseMode
+
+import config
+
+from ..log import LOGGER
+
+
+class NEXOR(Client):
+    def __init__(self):
+        LOGGER(__name__).info("Starting Bot...")
+        super().__init__(
+            name="NEXORMusic",
+            api_id=config.API_ID,
+            api_hash=config.API_HASH,
+            bot_token=config.BOT_TOKEN,
+            in_memory=True,
+            parse_mode=ParseMode.HTML,
+            max_concurrent_transmissions=7,
+        )
+
+    async def start(self):
+        await super().start()
+        self.id = self.me.id
+        self.name = self.me.first_name + " " + (self.me.last_name or "")
+        self.username = self.me.username
+        self.mention = self.me.mention
+
+        try:
+            await self.send_message(
+                chat_id=config.LOGGER_ID,
+                text=f"<u><b>» {self.mention} ʙᴏᴛ sᴛᴀʀᴛᴇᴅ :</b><u>\n\nɪᴅ : <code>{self.id}</code>\nɴᴀᴍᴇ : {self.name}\nᴜsᴇʀɴᴀᴍᴇ : @{self.username}",
+            )
+        except (errors.ChannelInvalid, errors.PeerIdInvalid):
+            LOGGER(__name__).error(
+                "Bot has failed to access the log group/channel. Make sure that you have added your bot to your log group/channel."
+            )
+            sys.exit()
+        except Exception as ex:
+            LOGGER(__name__).error(
+                f"Bot has failed to access the log group/channel.\n  Reason : {type(ex).__name__}."
+            )
+            sys.exit()
+
+        a = await self.get_chat_member(config.LOGGER_ID, self.id)
+        if a.status != ChatMemberStatus.ADMINISTRATOR:
+            LOGGER(__name__).error(
+                "Please promote your bot as an admin in your log group/channel."
+            )
+            sys.exit()
+        LOGGER(__name__).info(f"Music Bot Started as {self.name}")
+
+    async def stop(self):
+        await super().stop()
